@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <title>Redirecionando...</title>
+    <script>
+		window.onload = function () {
+			try {
+				const hash = window.location.hash.substring(1); // Ex: access_token=...
+				const params = new URLSearchParams(hash);
+				const token = params.get("access_token");
+
+				if (token) {
+					// Captura o caminho original da URL (ex: /recuperar-senha)
+					const path = window.location.pathname.replace(/\/$/, "");
+					// Monta a nova URL com query string e redireciona
+					const novaURL = `${path}?token=${encodeURIComponent(token)}`;
+					window.location.replace(novaURL);
+				} else {
+					// Redireciona imediatamente para uma rota de erro
+					window.location.replace("/erro");
+				}
+			} catch (e) {
+				// Se der erro por qualquer motivo, redireciona também
+				window.location.replace("/erro");
+			}
+		};
+    </script>
+</head>
+<body>
+<noscript>Ative o JavaScript para continuar.</noscript>
+</body>
+</html>
