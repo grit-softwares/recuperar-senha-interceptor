@@ -1,33 +1,26 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Redirecionando...</title>
     <script>
-		window.onload = function () {
-			try {
-				const hash = window.location.hash.substring(1); // Ex: access_token=...
-				const params = new URLSearchParams(hash);
-				const token = params.get("access_token");
+		window.onload = () => {
+			const hash = window.location.hash; // Ex: "#token=abc123&type=recovery"
+			if (hash && hash.startsWith("#")) {
+				const queryString = hash.replace("#", "?"); // Troca "#" por "?"
+				const redirectUrl = "https://kairos.gritsoftwares.com.br/recuperar-senha-step-two" + queryString;
 
-				if (token) {
-					// Captura o caminho original da URL (ex: /recuperar-senha)
-					const path = window.location.pathname.replace(/\/$/, "");
-					// Monta a nova URL com query string e redireciona
-					const novaURL = `${path}?token=${encodeURIComponent(token)}`;
-					window.location.replace(novaURL);
-				} else {
-					// Redireciona imediatamente para uma rota de erro
-					window.location.replace("/erro");
-				}
-			} catch (e) {
-				// Se der erro por qualquer motivo, redireciona também
-				window.location.replace("/erro");
+				// Redireciona automaticamente
+				window.location.replace(redirectUrl);
+			} else {
+				// Se não houver hash, redireciona para a página de erro ou página principal
+				window.location.replace("https://kairos.gritsoftwares.com.br");
 			}
 		};
     </script>
 </head>
 <body>
-<noscript>Ative o JavaScript para continuar.</noscript>
+<p>Redirecionando, aguarde...</p>
 </body>
 </html>
