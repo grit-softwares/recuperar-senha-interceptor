@@ -6,15 +6,17 @@
     <title>Redirecionando...</title>
     <script>
 		window.onload = () => {
-			const hash = window.location.hash; // Ex: "#token=abc123&type=recovery"
-			if (hash && hash.startsWith("#")) {
-				const queryString = hash.replace("#", "?"); // Troca "#" por "?"
-				const redirectUrl = "https://kairos.gritsoftwares.com.br/recuperar-senha-step-two" + queryString;
+			const hash = window.location.hash; // Ex: #access_token=abc123&expires_at=...
+			const params = new URLSearchParams(hash.replace('#', ''));
 
-				// Redireciona automaticamente
-				window.location.replace(redirectUrl);
+			const token = params.get('access_token');
+			if (token) {
+				// Redireciona com nome alternativo de parâmetro
+				const safeParam = encodeURIComponent(token);
+				const finalUrl = `https://kairos.gritsoftwares.com.br/recuperar-senha-step-two?k=${safeParam}`;
+				window.location.replace(finalUrl);
 			} else {
-				// Se não houver hash, redireciona para a página de erro ou página principal
+				// Caso não tenha token, redireciona para home ou página de erro
 				window.location.replace("https://kairos.gritsoftwares.com.br");
 			}
 		};
